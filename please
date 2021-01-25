@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+ARGS=("${@:-}")
+
+run() {
+
+    local firstArg="${1:-}"
+    local commandsDir="please-commands"
+    local fullCommandPath="$(baseDir)/$commandsDir/$firstArg"
+    local command
+
+    if [[ $firstArg == "list" ]]; then
+	listCommands
+	exit 0
+    fi
+    
+    if [[ "$firstArg" == -* ]] || [[ -z "$firstArg" ]]; then
+	displayHelp
+	exit 0
+    fi
+
+    if [[ -f "$fullCommandPath" ]]; then
+	source "$fullCommandPath"
+	local command="${firstArg}_run"
+    fi
+
+    eval $command
+    
+}
+
+displayHelp() {
+cat - <<EOT
+Please is a polite way to organize and run your shell scripts.
+
+
+Usage: syndesis $command [... options ...]
+
+
+example: please list
+
+
+# To list all available commands located in the 'please-commands'\n
+  directory\n
+
+	
+EOT
+} 
+
+listCommands() {
+    for command in $(ls $(baseDir)/please-commands/); do
+	[[ -f $command ]] && echo $command
+    done
+}
+
+baseDir() {
+    # echo $(cd "${BASH_SOURCE[0]}" && pwd)
+    echo $(dirname "$BASH_SOURCE")
+}
+
+
+source "$(baseDir)"/please-commands/utils/flags-opts-helper
+
+run "$ARGS"
+

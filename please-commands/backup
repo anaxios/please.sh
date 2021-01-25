@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+backup_run() {
+    
+    if $(hasFlag doom); then
+	ulimit -n 1024
+
+	source ~/.please
+	local sourceDir="/Users/sophronios/PARA"
+	local destinationDir="file:///Volumes/DOOM/BACKUP/PARA"
+	local logFile="/Users/sophronios/LOGS"
+
+	[[ -e /Volumes/DOOM/BACKUP ]] && PASSPHRASE=$DOOM_PASS /usr/local/bin/duplicity "$sourceDir" "$destinationDir" >> "$logFile"
+    exit 0
+    fi
+
+    backup_help
+}
+
+backup_help() {
+echo "Usage: please backup doom"
+}

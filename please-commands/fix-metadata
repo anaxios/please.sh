@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+fix-metadata_run() {
+
+    local options
+   
+
+    if $(hasFlag --artist); then
+	local artist=$(readOpt --artist)
+    fi
+    
+    if $(hasFlag --album); then
+	local album=$(readOpt --album)
+    fi
+
+    if $(hasFlag --title); then
+	local title=$(readOpt --title)
+	local inputExt=$(readOpt -i)
+	inputExt=.${inputExt##*.}
+	local outName=${title}${inputExt}
+
+    fi
+
+    if $(hasFlag -i); then
+	local inputFile=$(readOpt -i)
+	#echo "OPTIONS:${options[@]}"
+
+	ffmpeg -i "${inputFile}" \
+	       -c:a copy \
+	       -metadata album="${album:-}" \
+	       -metadata artist="${artist:-}" \
+	       -metadata title="${title:-}" \
+	       "${outName:=$inputFile}"
+
+	exit 0
+    fi
+
+    fix-metadata_help
+}
+
+fix-metadata_help() {
+    echo "Usage: please fix-metadata -i [input file] [--artist --title --album]"
+    echo "The title will be used as the output file name unless none is specified"
+}

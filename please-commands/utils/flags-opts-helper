@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+hasFlag() {
+    local flags="$@"
+    for var in "${ARGS[@]}"; do
+    for flag in $flags; do
+        if [ "$flag" = "$var" ]; then
+            echo 'true'
+	    return
+        fi
+    done
+done
+echo 'false'
+}
+
+
+#hasflag() {
+#    filters="$@"
+#    for var in "${ARGS[@]}"; do
+#        for filter in $filters; do
+#            if [ "$var" = "$filter" ]; then
+#                echo 'true'
+#                return
+#            fi
+#        done
+#    done
+#}
+
+readOpt() {
+   local filters="$@"
+   local next=false
+    for var in "${ARGS[@]}"; do
+        if $next; then
+            local value="${var##-}"
+            if [ "$value" != "$var" ]; then
+                # Next is already also option, so we haven't
+                # specified a value.
+                return
+            fi
+            echo $var
+            break
+        fi
+        for filter in $filters; do
+            if [[ "$var" = ${filter}* ]]; then
+                local value="${var//${filter}=/}"
+                if [ "$value" != "$var" ]; then
+                    echo $value
+                    return
+                fi
+                next=true
+            fi
+        done
+    done
+}
+
+
+if $(hasFlag --verbose -v); then
+    export PS4='+($(basename ${BASH_SOURCE[0]}):${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+    set -x
+fi
