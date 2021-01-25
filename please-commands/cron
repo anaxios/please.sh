@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+cron_run() {
+    if $(hasFlag -l); then
+	crontab -l | awk -v baseDir="$(baseDir)" '/#PLEASE/'
+    fi
+
+    local minutes
+    local hours
+    local days
+    local months
+    local dayOfWeek
+    
+    if $(hasFlag -m -H -d -M -w); then
+	minutes=$(readOpt -m)
+	hours=$(readOpt -h)
+	days=$(readOpt -d)
+	months=$(readOpt -M)
+	dayOfWeek=$(readOpt -w)
+    fi
+
+    if $(hasFlag -s); then
+	local commandName=$(readOpt -s)
+	
+	local commandFirst=$(echo ${commandName} | awk '{print $1}')
+	[[ ! -f "$(baseDir)/please-commands/$commandFirst" ]] \
+	    && echo "No command exists by that name" \
+	    && exit 1
+	
+	crontab -l | awk -v m=${minutes:="*"} \
+			 -v h=${hours:="*"} \
+			 -v d=${days:="*"} \
+			 -v M=${months:="*"} \
+			 -v w=${dayOfWeek:="*"} \
+			 -v s="$commandName" \
+			 -v base="$(baseDir)" \
+			 '{print} \
+			 END {print m " " h " " d " " M " " w " " base "/please " s " " "#PLEASE"}' \
+		#	 | crontab -
+    fi
+
+    if $(hasFlag -r); then
+	local commandName=$(readOpt -r)
+
+	crontab -l | awk -v base="$(baseDir)" \
+			 -v c="$commandName" \
+			 '$0 !~ base"/please "c || !/#PLEASE/ {print}' \
+		#	 | crontab -
+    fi
+
+}
+
+cron_help() {
+echo "something"
+}
