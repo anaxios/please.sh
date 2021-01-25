@@ -3,6 +3,9 @@
 
 ## Description
 Please.sh is a polite way to run and organize your Bash scripts.
+```
+>$ please [ script name ] [ options ]
+```
 
 Please was inspired by this talk:
   - Shell Ninja: Mastering the Art of Shell Scripting | Roland Huß
@@ -11,9 +14,6 @@ Please was inspired by this talk:
 And uses code based on this project:
    - https://github.com/syndesisio/syndesis/tree/master/tools/bin
 
-```
->$ please [ script name ] [ options ]
-```
 
 ## Installation
 Just link the please script into $PATH.
