@@ -7,14 +7,23 @@ sync_run() {
 
 	cd "$OB_PATH"
 
-	have_connection=$(ping -c 1 "1.1.1.1" >/dev/null 2>&1  && echo true || echo false)
+	#have_connection=$(ping q -c 1 "1.1.1.1"   && echo true || echo false) #>/dev/null 2>&1
 
-	[[ $have_connection == true ]] && git pull >/dev/null 2>&1
+	$(hasInternet) && git pull #>/dev/null 2>&1
+	#git pull
 
 	if [ -n "$(git status --porcelain)" ] ; then
 	    git add . >> /Users/sophronios/LOGS
 	    git commit -q -m "Last Sync: $(date +"%Y-%m-%d %H:%M:%S")" >> /Users/sophronios/LOGS
-	    [[ $have_connection == true ]] && git push -q >> /Users/sophronios/LOGS
+	     $(hasInternet) && git push -q #>> /Users/sophronios/LOGS
 	fi
+	exit 0
     fi
+
+    sync_help
+}
+
+sync_help() {
+    echo "Usage: please sync obsidian"
+
 }

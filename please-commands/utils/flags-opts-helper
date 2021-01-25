@@ -53,6 +53,9 @@ readOpt() {
     done
 }
 
+hasInternet() {
+    ping -W1000 -c 1 "1.1.1.1" >/dev/null 2>&1 && echo true || echo false
+}
 
 if $(hasFlag --verbose -v); then
     export PS4='+($(basename ${BASH_SOURCE[0]}):${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
