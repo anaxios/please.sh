@@ -3,6 +3,7 @@
 cron_run() {
     if $(hasFlag -l); then
 	crontab -l | awk -v baseDir="$(baseDir)" '/#PLEASE/'
+	exit 0
     fi
 
     local minutes
@@ -36,7 +37,8 @@ cron_run() {
 			 -v base="$(baseDir)" \
 			 '{print} \
 			 END {print m " " h " " d " " M " " w " " base "/please " s " " "#PLEASE"}' \
-		#	 | crontab -
+	    | crontab -
+	exit 0
     fi
 
     if $(hasFlag -r); then
@@ -45,7 +47,8 @@ cron_run() {
 	crontab -l | awk -v base="$(baseDir)" \
 			 -v c="$commandName" \
 			 '$0 !~ base"/please "c || !/#PLEASE/ {print}' \
-		#	 | crontab -
+	    | crontab -
+	exit 0
     fi
 
 }
