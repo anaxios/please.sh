@@ -12,9 +12,10 @@ Please.sh is a polite way to run and organize your Bash scripts.
 Just link the please script into $PATH.
 
 ## Usage
-Put your scripts in the please-command folder and create two functions: the run function and the help function:
+Put your scripts in the please-commands folder and create two functions: the run function and the help function:
 - `[ name of file ]_run() { }`
-- `[ name of file ]_help { }` 
+- `[ name of file ]_help() { }`
+- There's no need to change permissions on your script
 
 Please.sh handles flags and options for you with hasFlag() and readOpt()
 
