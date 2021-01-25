@@ -39,6 +39,14 @@ fix-metadata_run() {
 }
 
 fix-metadata_help() {
-    echo "Usage: please fix-metadata -i [input file] [--artist --title --album]"
-    echo "The title will be used as the output file name unless none is specified"
+    cat <<EOF 
+
+Usage: please fix-metadata -i [input file] [--artist --title --album]
+
+The title will be used as the output file name unless none is specified
+
+Metatags: --album --artist --title
+
+EOF
+
 }

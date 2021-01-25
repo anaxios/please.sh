@@ -9,8 +9,8 @@ run() {
     local firstArg="${1:-}"
     local commandsDir="please-commands"
     local fullCommandPath="$(baseDir)/$commandsDir/$firstArg"
-    local command
-
+    local command=displayHelp
+    
     if [[ $firstArg == "list" ]]; then
 	listCommands
 	exit 0
@@ -20,11 +20,17 @@ run() {
 	displayHelp
 	exit 0
     fi
-
+    
+    if $(hasFlag --help -h); then
+	displayHelp
+	exit 0
+    fi
+    
     if [[ -f "$fullCommandPath" ]]; then
 	source "$fullCommandPath"
-	local command="${firstArg}_run"
+        command="${firstArg}_run"
     fi
+
 
     eval $command
     
@@ -32,31 +38,46 @@ run() {
 
 displayHelp() {
 cat - <<EOT
-Please is a polite way to organize and run your shell scripts.
+
+Please.sh is a polite way to organize and run your shell scripts.
+
+	  Usage: syndesis [ command ] [... options ...]
 
 
-Usage: syndesis $command [... options ...]
+To list all available commands located in the 'please-commands' directory:
 
-
-example: please list
-
-
-# To list all available commands located in the 'please-commands'\n
-  directory\n
-
+   	  please list
 	
 EOT
 } 
 
 listCommands() {
     for command in $(ls $(baseDir)/please-commands/); do
-	[[ -f $command ]] && echo $command
+	[[ -f $(baseDir)/please-commands/$command ]] && echo $command
     done
 }
 
 baseDir() {
-    # echo $(cd "${BASH_SOURCE[0]}" && pwd)
-    echo $(dirname "$BASH_SOURCE")
+
+    local script="${BASH_SOURCE[0]}"
+    
+    if [ -L $script ]; then
+        if readlink -f $script >/dev/null 2>&1; then
+            script=$(readlink -f $script)
+        elif readlink $script >/dev/null 2>&1; then
+            script=$(readlink $script)
+        elif realpath $script >/dev/null 2>&1; then
+            script=$(realpath $script)
+        else
+            echo "ERROR: Cannot resolve symbolic link $script"
+            exit 1
+        fi
+    fi
+
+    local dir=$(dirname "$script")
+    local full_dir=$(cd "${dir}" && pwd)
+    echo ${full_dir}
+
 }
 
 
