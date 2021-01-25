@@ -5,8 +5,8 @@
 Please.sh is a polite way to run and organize your Bash scripts.
 
 Please was inspired by this talk:
-      - Shell Ninja: Mastering the Art of Shell Scripting | Roland Huß
-      - https://www.youtube.com/watch?v=1mt2-LbKuvY
+  - Shell Ninja: Mastering the Art of Shell Scripting | Roland Huß
+  - https://www.youtube.com/watch?v=1mt2-LbKuvY
 
 And uses code based on this project:
    - https://github.com/syndesisio/syndesis/tree/master/tools/bin
