@@ -1,0 +1,28 @@
+#!/bin/bash
+
+download_run() {
+
+    if $(hasFlag hermitcraft); then
+	
+	cd /Volumes/DOOM/Video/YouTube/newHermitCraft
+	youtube-dl -i \
+		   --reject-title "LIVE" \
+		   --download-archive /Volumes/DOOM/Video/YouTube/Hermitcraft_archive.txt \
+		   -o '%(upload_date)s-%(uploader)s-%(title)s' \
+		   -a YT-subs.txt
+	exit 0
+    fi
+
+    download_help
+}
+
+download_help() {
+cat - <<EOF
+
+Downloads playlist of hermitcraft videos & and names them by date.
+
+EOF
+}
+
+# alias youtube-hermit="youtube-dl --download-archive /Volumes/DOOM/Video/YouTube/Hermitcraft_archive.txt --playlist-end 334 --datebefore 20210101 -o '%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s' -i https://www.youtube.com/playlist\?list\=PLWKOqb9WPJvyqb7rQ_MyfeI2MnaR1uGYP"
+
