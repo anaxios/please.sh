@@ -16,37 +16,44 @@ run() {
 	exit 0
     fi
 
+    if [[ -f "$fullCommandPath"  && $(hasFlag --help -h) ]]; then
+	source "$fullCommandPath"
+	eval "${firstArg}_help"
+	exit 0
+    fi
+    
+
     if $(hasFlag --help -h); then
+	[[ ! -f "$fullCommandPath" \
+	       && "$firstArg" != "-h" \
+	       && "$firstArg" != "--help" ]] \
+	    && echo "Invalid Command"
 	displayHelp
 	exit 0
     fi
     
 
-    if [[ "$firstArg" == -* ]] || [[ -z "$firstArg" ]]; then
-	echo "Invalid option"
-	displayHelp
-	exit 0
-    fi
+    # if [[ "$firstArg" == -* ]] || [[ -z "$firstArg" ]]; then
+    # 	echo "Invalid option"
+    # 	displayHelp
+    # 	exit 0
+    # fi
     
     if [[ -f "$fullCommandPath" ]]; then
 	source "$fullCommandPath"
         command="${firstArg}_run"
+	eval $command
+	exit 0
     fi
 
 
-    eval $command
+    echo "Invalid Option"
+    displayHelp
     
 }
 
 displayHelp() {
 
-    if [[ -f "$fullCommandPath" ]]; then
-	source "$fullCommandPath"
-	eval "${firstArg}_help"
-	exit 0
-    else
-	echo "Invalid Command"
-    fi
 cat - <<EOT
 
 Please.sh is a polite way to organize and run your shell scripts.
