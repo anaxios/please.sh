@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+_run() {
+
+    # script goes here
+
+    # Defaults to error
+    echo "Invalid option"
+    _help
+}
+
+_help() {
+	    cat - <<EOF 
+
+Description:
+
+
+Usage: 
+
+
+EOF
+
+}
