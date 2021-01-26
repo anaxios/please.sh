@@ -14,10 +14,29 @@ backup_run() {
     exit 0
     fi
 
+    if $(hasFlag nextcloud) && $(hasInternet); then
+	ulimit -n 1024
+
+	source ~/.please
+	local sourceDir="/Users/sophronios/Nextcloud"
+	local destinationDir="b2://$BACKUP_B2_URL"
+	local logFile="/Users/sophronios/LOGS"
+
+	[[ -e /Volumes/DOOM/BACKUP ]] && PASSPHRASE=$DOOM_PASS /usr/local/bin/duplicity "$sourceDir" "$destinationDir" >> "$logFile"
+    exit 0
+    fi    
+
     echo "Invalid option"
     backup_help
 }
 
 backup_help() {
-echo "Usage: please backup doom"
+    echo "Usage: please backup { doom, nextcloud }"
+
+    cat - <<EOF
+Description:
+Backs up using duplicity
+
+$ duplicity ~ b2://[keyID]:[application key]@[B2 bucket name]
+EOF
 }
