@@ -17,7 +17,7 @@ run() {
     fi
 
     if $(hasFlag --help -h); then
-	displayHelp "$fullCommandPath"
+	displayHelp
 	exit 0
     fi
     
@@ -44,6 +44,8 @@ displayHelp() {
 	source "$fullCommandPath"
 	eval "${firstArg}_help"
 	exit 0
+    else
+	echo "Invalid Command"
     fi
 cat - <<EOT
 
