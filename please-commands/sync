@@ -15,11 +15,13 @@ sync_run() {
 	if [ -n "$(git status --porcelain)" ] ; then
 	    git add . >> /Users/sophronios/LOGS
 	    git commit -q -m "Last Sync: $(date +"%Y-%m-%d %H:%M:%S")" >> /Users/sophronios/LOGS
-	     $(hasInternet) && git push -q #>> /Users/sophronios/LOGS
+	    $(hasInternet) && git
+	    push -q #>> /Users/sophronios/LOGS
 	fi
 	exit 0
     fi
-
+    
+    echo "Invalid option"
     sync_help
 }
 
