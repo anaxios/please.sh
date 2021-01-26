@@ -9,14 +9,14 @@ run() {
     local firstArg="${1:-}"
     local commandsDir="please-commands"
     local fullCommandPath="$(baseDir)/$commandsDir/$firstArg"
-    local command=displayHelp
+    #local command=displayHelp
     
     if [[ $firstArg == "list" ]]; then
 	listCommands
 	exit 0
     fi
 
-    if [[ -f "$fullCommandPath"  && $(hasFlag --help -h) ]]; then
+    if [[ -f "$fullCommandPath" ]] && $(hasFlag --help -h); then
 	source "$fullCommandPath"
 	eval "${firstArg}_help"
 	exit 0
@@ -41,8 +41,8 @@ run() {
     
     if [[ -f "$fullCommandPath" ]]; then
 	source "$fullCommandPath"
-        command="${firstArg}_run"
-	eval $command
+        #command="${firstArg}_run"
+	eval "${firstArg}_run" #$command
 	exit 0
     fi
 
