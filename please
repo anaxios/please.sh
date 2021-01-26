@@ -32,22 +32,15 @@ run() {
 	exit 0
     fi
     
-
-    # if [[ "$firstArg" == -* ]] || [[ -z "$firstArg" ]]; then
-    # 	echo "Invalid option"
-    # 	displayHelp
-    # 	exit 0
-    # fi
-    
     if [[ -f "$fullCommandPath" ]]; then
 	source "$fullCommandPath"
-        #command="${firstArg}_run"
-	eval "${firstArg}_run" #$command
+
+	eval "${firstArg}_run"
 	exit 0
     fi
 
 
-    echo "Invalid Option"
+    echo "Invalid Command or Option"
     displayHelp
     
 }
