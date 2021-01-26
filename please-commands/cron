@@ -51,6 +51,7 @@ cron_run() {
 	exit 0
     fi
 
+    echo "Invalid Option"
     cron_help
 }
 
