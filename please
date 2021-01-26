@@ -40,8 +40,8 @@ run() {
 
 displayHelp() {
 
-    if [[ -f "$1" ]]; then
-	source "$1"
+    if [[ -f "$fullCommandPath" ]]; then
+	source "$fullCommandPath"
 	eval "${firstArg}_help"
 	exit 0
     fi
