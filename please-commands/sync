@@ -26,6 +26,14 @@ sync_run() {
 }
 
 sync_help() {
-    echo "Usage: please sync obsidian"
+   cat - <<EOF 
+
+Description:
+       uses github to sycronize Obsidian vault.
+
+Usage: 
+       please sync obsidian
+
+EOF
 
 }
