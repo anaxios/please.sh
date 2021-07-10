@@ -2,27 +2,39 @@
 
 backup_run() {
     
-    if $(hasFlag doom); then
+    # if $(hasFlag doom); then
+    # 	ulimit -n 1024
+
+    # 	source ~/.please
+    # 	local sourceDir="/Users/sophronios/PARA"
+    # 	local destinationDir="file:///Volumes/DOOM/BACKUP/PARA"
+    # 	local logFile="/Users/sophronios/LOGS"
+
+    # 	[[ -e destinationDir{%%"file://"} ]] && PASSPHRASE=$DOOM_PASS /usr/local/bin/duplicity "$sourceDir" "$destinationDir" >> "$logFile"
+    # exit 0
+    # fi
+
+    if $(hasFlag para) && $(hasInternet); then
 	ulimit -n 1024
 
 	source ~/.please
-	local sourceDir="/Users/sophronios/PARA"
-	local destinationDir="file:///Volumes/DOOM/BACKUP/PARA"
-	local logFile="/Users/sophronios/LOGS"
-
-	[[ -e /Volumes/DOOM/BACKUP ]] && PASSPHRASE=$DOOM_PASS /usr/local/bin/duplicity "$sourceDir" "$destinationDir" >> "$logFile"
-    exit 0
-    fi
-
-    if $(hasFlag nextcloud) && $(hasInternet); then
-	ulimit -n 1024
-
-	source ~/.please
-	local sourceDir="/Users/sophronios/Nextcloud"
+	local sourceDir="/PARA"
 	local destinationDir="b2://$BACKUP_B2_URL"
-	local logFile="/Users/sophronios/LOGS"
+	local logFile="~/LOGS"
 
-	[[ -e /Volumes/DOOM/BACKUP ]] && PASSPHRASE=$DOOM_PASS /usr/local/bin/duplicity "$sourceDir" "$destinationDir" >> "$logFile"
+	[[ -e "$sourceDir" ]] && PASSPHRASE=$DOOM_PASS duplicity "$sourceDir" "$destinationDir"
+    exit 0
+    fi    
+
+    if $(hasFlag OrthoCraft) && $(hasInternet); then
+	ulimit -n 1024
+
+	source ~/.please
+	local sourceDir="/home/soph/.local/share/multimc/instances/OrthoCraft"
+	local destinationDir="b2://$ORTHOCRAFT_B2_URL"
+	local logFile="~/LOGS"
+
+	[[ -e "$sourceDir" ]] && PASSPHRASE=$DOOM_PASS duplicity "$sourceDir" "$destinationDir"
     exit 0
     fi    
 
